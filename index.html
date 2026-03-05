@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topup Game VIP - Seperti Codashop</title>
+    <!-- Font Awesome untuk ikon game -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        /* Grid Game Card */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+            border-color: #ffd700;
+        }
+
+        .game-card.selected {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .game-card i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .game-card h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Panel Topup */
+        .topup-panel {
+            background: white;
+            border-radius: 30px 30px 20px 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topup-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .topup-header i {
+            font-size: 3rem;
+            color: #302b63;
+        }
+
+        .topup-header h2 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #302b63;
+            outline: none;
+        }
+
+        .zone-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+        }
+
+        /* Nama akun hasil cek */
+        .account-name {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #f0f0f0;
+            font-weight: 500;
+            color: #333;
+            display: none;
+        }
+
+        .account-name.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .account-name.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Paket Diamond */
+        .pack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .pack-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pack-card.selected {
+            border-color: #302b63;
+            background: #e3e7ff;
+            transform: scale(1.02);
+        }
+
+        .pack-card .diamond {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #302b63;
+        }
+
+        .pack-card .price {
+            color: #28a745;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Metode Pembayaran */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .payment-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .payment-item.selected {
+            border-color: #302b63;
+            background: #e3e7ff;
+        }
+
+        .payment-item i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+            color: #302b63;
+        }
+
+        /* Tombol */
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: #302b63;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #1f1a4b;
+        }
+
+        .btn:disabled {
+            background: #a09bc2;
+            cursor: not-allowed;
+        }
+
+        /* Hasil notifikasi */
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #302b63;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Topup Game VIP</h1>
+            <p>Murah, Cepat, dan Aman</p>
+        </div>
+
+        <!-- Daftar Game dalam Card -->
+        <div class="game-grid" id="gameGrid">
+            <!-- Akan diisi JavaScript -->
+        </div>
+
+        <!-- Panel Topup (muncul setelah pilih game) -->
+        <div class="topup-panel" id="topupPanel">
+            <div class="topup-header" id="panelHeader">
+                <i class="fas fa-gamepad" id="panelIcon"></i>
+                <h2 id="panelTitle">Pilih Game Dulu</h2>
+            </div>
+
+            <form id="topupForm">
+                <!-- ID & Zone -->
+                <div class="form-group">
+                    <label for="userId">ID User <span style="color:red;">*</span></label>
+                    <input type="text" id="userId" placeholder="Masukkan ID game" required>
+                </div>
+
+                <div class="zone-row">
+                    <div class="form-group">
+                        <label for="zoneId">Zone ID (opsional)</label>
+                        <input type="text" id="zoneId" placeholder="Contoh: 1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="server">Server (opsional)</label>
+                        <input type="text" id="server" placeholder="Contoh: 2121">
+                    </div>
+                </div>
+
+                <!-- Nama akun hasil cek -->
+                <div class="account-name" id="accountName"></div>
+
+                <!-- Paket Diamond -->
+                <div class="form-group">
+                    <label>Pilih Jumlah Diamond</label>
+                    <div class="pack-grid" id="packContainer"></div>
+                    <input type="hidden" id="selectedPack" name="selectedPack">
+                </div>
+
+                <!-- Metode Pembayaran -->
+                <div class="form-group">
+                    <label>Metode Pembayaran</label>
+                    <div class="payment-grid" id="paymentContainer"></div>
+                    <input type="hidden" id="selectedPayment" name="selectedPayment">
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Beli Sekarang</button>
+            </form>
+
+            <div id="result"></div>
+        </div>
+
+        <div class="footer">
+            ⚡ Semua transaksi diproses secara aman via Netlify Functions
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

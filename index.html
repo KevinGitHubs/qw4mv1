@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Topup Game VIP - Qw4M</title>
     <!-- Font Awesome 6 (gratis) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -41,7 +42,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            text-shadow: 0 5px 15px rgba(255,215,0,0.3);
+            text-shadow: 
+0 0 10px rgba(255,215,0,0.6),
+0 0 20px rgba(255,215,0,0.4),
+0 0 40px rgba(255,215,0,0.3);
         }
 
         .header p {
@@ -672,12 +676,30 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+@media (max-width:600px){
+
+.header h1{
+font-size:2rem;
+}
+
+.topup-panel{
+padding:25px;
+}
+
+.pack-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.payment-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎮 Topup Game VIP</h1>
+            <h1>🎮 Qw4M Topup Game VIP</h1>
             <p>Murah, Cepat, dan Aman</p>
         </div>
 
